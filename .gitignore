@@ -6,7 +6,7 @@ scripts/flow/*/.flowconfig
 .grunt
 _SpecRunner.html
 __benchmarks__
-# build/
+# build/  Check in build for now because Unity WebGL expects a Build folder (delete if you figure this out, and remember not to check in the react build folder manually)
 remote-repo/
 coverage/
 flow-coverage/
