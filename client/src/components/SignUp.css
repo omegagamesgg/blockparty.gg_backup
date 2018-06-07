@@ -1,4 +1,4 @@
-.SignInPage {
+.SignUpPage {
   display: flex;
   width: 100%;
   height: 100%;
@@ -13,10 +13,9 @@
   color: white;
 }
 
-.SignInInputForm {
+.SignUpInputForm {
   width: 50%;
-  height: 25%;
-  margin: 10px;
+  height: 40%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -33,16 +32,21 @@
 .SubmitButton {
   height: 50px;
   font-size: 16px;
-  color: white;
+  color: red;
   border: none;
   border-radius: 3px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   background-color: #00387F;
 }
 
-.ErrorMessage {
+.SignUpLink {
+  width: 50%;
   font-size: 16px;
-  font-weight: normal;
   color: white;
   text-align: center;
+}
+
+.SignUpLink a:link, a:visited, a:hover, a:active {
+  color: #00387F;
+  text-decoration: none;
 }

@@ -48,12 +48,11 @@ class SignInForm extends Component {
     const isInvalid = password === '' || email === '';
 
     return (
-      <form className="InputForm" onSubmit={this.onSubmit}>
+      <form className="SignInInputForm" onSubmit={this.onSubmit}>
         <input className="InputField" value={email} onChange={event => this.setState(byPropKey('email', event.target.value))} type="text" placeholder="Email address" />
         <input className="InputField" value={password} onChange={event => this.setState(byPropKey('password', event.target.value))} type="password" placeholder="Password" />
         <button className="SubmitButton" disabled={isInvalid} type="submit">Sign in</button>
-
-        { error && <p>{error.message}</p> }
+        { error && <p className="ErrorMessage">{error.message}</p> }
       </form>
     );
   }
