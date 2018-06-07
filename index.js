@@ -45,6 +45,10 @@ io.on('connect', function(socket) {
     }
   });
 
+  socket.on('join lobby', function() {
+    io.emit('player joined lobby', )
+  });
+
   socket.on('disconnect', function(reason) {
     console.log(`disconnect: socket.id=${socket.id}, reason=${reason}`);
   });
