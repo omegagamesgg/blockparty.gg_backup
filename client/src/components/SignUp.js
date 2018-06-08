@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { auth } from '../firebase';
+import { auth, db } from '../firebase';
 import * as routes from '../constants/routes';
 import './SignUp.css';
 
@@ -30,7 +30,7 @@ class SignUpForm extends Component {
 
   onSubmit = (event) => {
     const { 
-      username,
+      playername,
       email,
       passwordOne,
     } = this.state;
@@ -38,18 +38,22 @@ class SignUpForm extends Component {
     const { history } = this.props;
 
     auth.doCreateUserWithEmailAndPassword(email, passwordOne).then(authUser => {
-      this.setState(() => ({...INITIAL_STATE}));
-      history.push(routes.HOME);
+      // Create a player in the Firebase database
+      db.doCreatePlayer(authUser.user.uid, playername, email).then(() => {
+        this.setState(() => ({...INITIAL_STATE}));
+        history.push(routes.HOME);
+      }).catch(error => {
+        this.setState(byPropKey('error', error));
+      });
     }).catch(error => {
       this.setState(byPropKey('error', error));
     });
-
     event.preventDefault();
   }
 
   render() {
     const {
-      username,
+      playername,
       email,
       passwordOne,
       passwordTwo,
@@ -59,14 +63,14 @@ class SignUpForm extends Component {
     const isInvalid = passwordOne !== passwordTwo ||
       passwordOne === '' ||
       email === '' ||
-      username === '';
+      playername === '';
 
     return (
       <form className="SignUpInputForm" onSubmit={this.onSubmit}>
-        <input className="InputField" value={username} onChange={event => this.setState(byPropKey('username', event.target.value))} type="text" placeholder="Full Name" />
-        <input className="InputField" value={email} onChange={event => this.setState(byPropKey('email', event.target.value))} type="text" placeholder="Email Address" />
+        <input className="InputField" value={playername} onChange={event => this.setState(byPropKey('playername', event.target.value))} type="text" placeholder="Player name" />
+        <input className="InputField" value={email} onChange={event => this.setState(byPropKey('email', event.target.value))} type="text" placeholder="Email address" />
         <input className="InputField" value={passwordOne} onChange={event => this.setState(byPropKey('passwordOne', event.target.value))} type="password" placeholder="Password" />
-        <input className="InputField" value={passwordTwo} onChange={event => this.setState(byPropKey('passwordTwo', event.target.value))} type="password" placeholder="Confirm Password" />
+        <input className="InputField" value={passwordTwo} onChange={event => this.setState(byPropKey('passwordTwo', event.target.value))} type="password" placeholder="Confirm password" />
         <button className="SubmitButton" type="submit" disabled={isInvalid}>Sign up</button>
         { error && <p className="ErrorMessage">{error.message}</p> }
       </form>
