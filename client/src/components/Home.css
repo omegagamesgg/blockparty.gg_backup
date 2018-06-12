@@ -22,7 +22,7 @@
   align-items: center;
 }
 
-.HomeMenu {
+.HomeMenuButton {
   margin-left: 25px;
   margin-right: 25px;
   margin-top: 75px;
@@ -32,6 +32,26 @@
   border: 0;
   color: white;
   font-size: 2em;
+}
+
+#HomeMenu {
+  width: 300px;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  transition: transform 0.3s cubic-bezier(0, 0.52, 0, 1);
+  overflow: scroll;
+  z-index: 1000;
+  background-color: #006FFF;
+}
+
+#HomeMenu.hide {
+  transform: translate3d(-300px, 0, 0);
+}
+
+#HomeMenu.show {
+  transform: translate3d(0px, 0, 0);
 }
 
 .HomeTitle {

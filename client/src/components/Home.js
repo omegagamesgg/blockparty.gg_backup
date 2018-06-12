@@ -1,19 +1,38 @@
 import React, { Component } from 'react';
 import withAuthorization from './withAuthorization';
 import { db } from '../firebase';
-import './Home.css';
 import AuthUserContext from './AuthUserContext';
+import SignOutButton from './SignOut';
+import './Home.css';
 
 class HomePage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      menuVisible: false
+    };
+    this.handleHomePageMouseDown = this.handleHomePageMouseDown.bind(this);
+    this.handleHomeMenuButtonMouseDown = this.handleHomeMenuButtonMouseDown.bind(this);
+  }
+
+  handleHomePageMouseDown(event) {
+    if(this.state.menuVisible) {
+      this.setState({ menuVisible: false });
+    }
+  }
+
+  handleHomeMenuButtonMouseDown() {
+    this.setState({ menuVisible: true });
+  }
+
   render() {
     return (
       <AuthUserContext.Consumer>
         { context =>
-          <main className="HomePage">
+          <main className="HomePage" onMouseDown={this.handleHomePageMouseDown}>
             <header className="HomeHeader">
-              <button className="HomeMenu"><i className="fas fa-bars"></i></button>
-              <nav>
-              </nav>
+              <button className="HomeMenuButton" onMouseDown={this.handleHomeMenuButtonMouseDown}><i className="fas fa-bars"></i></button>
+              <HomeMenu visibility={this.state.menuVisible} />
               <p className="HomeTitle">Lobby</p>
             </header>
             <section className="HomeBody" id="HomeBody">
@@ -26,6 +45,23 @@ class HomePage extends Component {
         }
       </AuthUserContext.Consumer>
     ); 
+  }
+}
+
+class HomeMenu extends Component {
+  handleOnMouseDown(event) {
+    event.stopPropagation();
+  }
+
+  render() {
+    var visibilityClass = this.props.visibility ? "show" : "hide";
+    return(
+      <nav id="HomeMenu" className={visibilityClass} onMouseDown={this.handleOnMouseDown}>
+        <ul>
+          <li><SignOutButton /></li>
+        </ul>
+      </nav>
+    )
   }
 }
 
