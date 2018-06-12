@@ -11,7 +11,7 @@ const SignUpPage = ({history}) =>
   </div>
 
 const INITIAL_STATE = {
-  username: '',
+  playername: '',
   email: '',
   passwordOne: '',
   passwordTwo: '',

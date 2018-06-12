@@ -6,9 +6,9 @@ import withAuthorization from './withAuthorization';
 
 const ProfilePage = () =>
   <AuthUserContext.Consumer>
-    { authUser => 
+    { context => 
       <div>
-        <p>{authUser.email}</p>
+        <p>{context.currentPlayer.playername}</p>
         <PasswordForgetForm />
         <PasswordChangeForm />
       </div>
