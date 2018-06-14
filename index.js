@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const admin = require('firebase-admin');
-const serviceAccount = require('./block-party-development-firebase-adminsdk-wucox-399c19626e.json');
+const serviceAccount = require('./serviceAccount.json');
 
 // Setup Express web app
 const app = express();

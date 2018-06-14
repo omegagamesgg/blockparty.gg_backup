@@ -23,6 +23,3 @@ chrome-user-data
 .vscode
 *.swp
 *.swo
-
-# Firebase Admin SDK private key
-block-party-development-firebase-adminsdk-wucox-399c19626e.json
