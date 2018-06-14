@@ -21,8 +21,8 @@ app.listen(port);
 console.log(`Server listening on ${port}`);
 
 // Initialize firebase admin
-const serviceAccount;
-const databaseURL;
+var serviceAccount;
+var databaseURL;
 if(process.env.NODE_ENV === 'production') {
   serviceAccount = serviceAccountProd;
   databaseURL = "https://block-party-31d52.firebaseio.com";
