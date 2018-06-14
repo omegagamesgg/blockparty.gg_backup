@@ -15,3 +15,8 @@ export const getRecentMessages = () =>
 
 export const doCreateMessage = (sender, message) =>
   db.ref('chatMessages').push({ sender, message });
+
+// Next Game Time API
+
+export const getNextGameTime = () =>
+  db.ref('nextGameTime');

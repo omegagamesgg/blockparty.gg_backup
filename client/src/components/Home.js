@@ -9,10 +9,29 @@ class HomePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      menuVisible: false
+      menuVisible: false,
+      nextGameTime: null,
+      countdown: '',
     };
     this.handleHomePageMouseDown = this.handleHomePageMouseDown.bind(this);
     this.handleHomeMenuButtonMouseDown = this.handleHomeMenuButtonMouseDown.bind(this);
+  }
+
+  componentDidMount() {
+    const nextGameTimeRef = db.getNextGameTime();
+    nextGameTimeRef.on('value', snapshot => {
+      this.setState({ nextGameTime: snapshot.val() });
+    });
+
+    setInterval(() => {
+      var nextGameTimeDate = new Date(this.state.nextGameTime);
+      var currentTimeDate = new Date();
+      var remainingTimeDate = new Date(nextGameTimeDate - currentTimeDate);
+      var formattedMinutes = remainingTimeDate.getMinutes();
+      var formattedSeconds = remainingTimeDate.getSeconds() >= 10 ? remainingTimeDate.getSeconds() : '0' + remainingTimeDate.getSeconds();
+      var countdown = `Next game starts in ${formattedMinutes}:${formattedSeconds}`;
+      this.setState({ countdown: countdown });
+    }, 1000);
   }
 
   handleHomePageMouseDown(event) {
@@ -34,6 +53,7 @@ class HomePage extends Component {
               <button className="HomeMenuButton" onMouseDown={this.handleHomeMenuButtonMouseDown}><i className="fas fa-bars"></i></button>
               <HomeMenu visibility={this.state.menuVisible} />
               <p className="HomeTitle">Lobby</p>
+              <p className="HomeNextGameTime">{this.state.countdown}</p>
             </header>
             <section className="HomeBody" id="HomeBody">
               <ChatMessageList />
