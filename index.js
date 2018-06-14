@@ -1,7 +1,8 @@
 const express = require('express');
 const path = require('path');
 const admin = require('firebase-admin');
-const serviceAccount = require('./serviceAccount.json');
+const serviceAccountDev = require('./serviceAccountDev.json');
+const serviceAccountProd = require('./serviceAccountProd.json');
 
 // Setup Express web app
 const app = express();
@@ -19,6 +20,7 @@ const port = process.env.PORT || 5000;
 app.listen(port);
 console.log(`Server listening on ${port}`);
 
+const serviceAccount = process.env.NODE_ENV === 'production' ? serviceAccountProd : serviceAccountDev;
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: "https://block-party-development.firebaseio.com"
