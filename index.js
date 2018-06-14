@@ -20,10 +20,21 @@ const port = process.env.PORT || 5000;
 app.listen(port);
 console.log(`Server listening on ${port}`);
 
-const serviceAccount = process.env.NODE_ENV === 'production' ? serviceAccountProd : serviceAccountDev;
+// Initialize firebase admin
+const serviceAccount;
+const databaseURL;
+if(process.env.NODE_ENV === 'production') {
+  serviceAccount = serviceAccountProd;
+  databaseURL = "https://block-party-31d52.firebaseio.com";
+}
+else {
+  serviceAccount = serviceAccountDev;
+  databaseURL = "https://block-party-development.firebaseio.com";
+}
+
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://block-party-development.firebaseio.com"
+  databaseURL: databaseURL
 });
 
 // Initialize game duration
