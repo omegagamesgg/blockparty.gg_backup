@@ -20,4 +20,4 @@ Block Party is designed to be an engaging, accessible experience that anyone can
 Block Party will need to be able to operate sustainably and provide room for monetization once product-market fit and scale are achieved. For now, we will focus on "finding the fun", but we will give consideration to elements of the world and games that may lend to monetization. For instance, we will experiment with advertising breaks in between games. We will look for opportunities to offer sponsored prizes for leaderboard achievements. We will experiement with paid unlockable cosmetic content. Additionally, as we enter later stages of growth, we will look for opportunites to onboard 3rd party developers to create games and share in-game revenue.
 
 # Team
-Ron Forbes
+Ron Forbes 
