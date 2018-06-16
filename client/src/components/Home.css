@@ -58,6 +58,12 @@
   margin-top: 75px;
   margin-bottom: 10px;
   font-size: 32px;
+  flex: 1;
+}
+
+.HomeNextGameTime {
+  margin-top: 75px;
+  margin-right: 25px;
 }
 
 .HomeBody {

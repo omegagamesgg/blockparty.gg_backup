@@ -20,3 +20,14 @@ export const doCreateMessage = (sender, message) =>
 
 export const getNextGameTime = () =>
   db.ref('nextGameTime');
+
+// Game State API
+
+export const getGameState = () =>
+  db.ref('gameState');
+
+export const getGamePlayerState = (id) =>
+  db.ref(`gameState/${id}`);
+
+export const setGamePlayerState = (id, x, y) =>
+  db.ref(`gameState/${id}`).set({ x, y });

@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "firebase": "^5.0.4",
+    "phaser": "^3.10.1",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
     "react-router-dom": "^4.3.0",

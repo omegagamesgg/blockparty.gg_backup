@@ -20,3 +20,6 @@ export const doPasswordRest = (email) =>
 export const doPasswordUpdate = (password) =>
   auth.currentUser.updatePassword(password);
 
+// Current user
+export const getCurrentUser = () =>
+  auth.currentUser;

@@ -81,3 +81,19 @@ setInterval(() => {
     console.log(`Set database state: nextGameTime: ${nextGameTime}`);
   }
 }, 1000);
+
+var players = {};
+// Initialize game players
+var playersRef = admin.database().ref('players');
+var gameStateRef = admin.database().ref('gameState');
+gameStateRef.remove();
+playersRef.once('value', snapshot => {
+  snapshot.forEach(player => {
+    players[player.key] = {
+      x: 50,
+      y: 50,
+    };
+    var gamePlayerStateRef = admin.database().ref(`gameState/${player.key}`);
+    gamePlayerStateRef.set(players[player.key]);
+  });
+});
