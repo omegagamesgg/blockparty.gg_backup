@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import withAuthorization from './withAuthorization';
 import Phaser from 'phaser';
 import PlayScene from './PlayScene';
-import { auth, db } from '../firebase';
+import { authentication, database } from '../firebase';
 
 class PlayPage extends Component {
   constructor(props) {
@@ -24,10 +24,10 @@ class PlayPage extends Component {
       }
     }, 60);
 
-    var gameStateRef = db.getGameState();
+    var gameStateRef = database.getGameState();
     gameStateRef.once('value', snapshot => {
       snapshot.forEach(player => {
-        if(player.key === auth.getCurrentUser().uid) {
+        if(player.key === authentication.getCurrentUser().uid) {
           this.game.scene.keys["PlayScene"].addCurrentPlayer(player);
         }
         else {

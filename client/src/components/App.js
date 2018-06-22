@@ -7,6 +7,7 @@ import PasswordForgetPage from './PasswordForget';
 import HomePage from './Home';
 import ProfilePage from './Profile';
 import PlayPage from './Play';
+import ClickyRacePage from './Games/ClickyRace';
 import * as routes from '../constants/routes';
 import withAuthentication from './withAuthentication';
 import './App.css';
@@ -21,6 +22,7 @@ const App = () =>
       <Route exact path={ routes.HOME } component={() => <HomePage />} />
       <Route exact path={ routes.PROFILE } component={() => <ProfilePage />} />
       <Route exact path={ routes.PLAY } component={() => <PlayPage />} />
+      <Route exact path={ routes.CLICKY_RACE } component={() => <ClickyRacePage />} />
     </div>
   </Router>
 

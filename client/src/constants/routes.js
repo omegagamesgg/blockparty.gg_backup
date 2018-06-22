@@ -5,3 +5,4 @@ export const HOME = '/home';
 export const PROFILE = '/profile';
 export const PASSWORD_FORGET = '/pw-forget';
 export const PLAY = '/play';
+export const CLICKY_RACE = '/clickyrace';

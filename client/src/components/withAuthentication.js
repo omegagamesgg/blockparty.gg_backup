@@ -1,40 +1,52 @@
 import React from 'react';
-import AuthUserContext from './AuthUserContext';
-import { firebase, db } from '../firebase';
+import socketIOClient from 'socket.io-client';
+import AuthenticatedUserContext from './AuthenticatedUserContext';
+import { authentication, database } from '../firebase';
 
 const withAuthentication = (Component) => {
   class WithAuthentication extends React.Component {
     constructor(props) {
       super(props);
       this.state = { 
-        authUser: null, 
-        currentPlayer: null,
+        signedInUser: null, 
+        signedInPlayer: null,
       };
     }
 
     componentDidMount() {
-      firebase.auth.onAuthStateChanged(authUser => {
-        if(authUser) {
-          db.onceGetPlayerById(authUser.uid).then(snapshot => {
+      authentication.onAuthenticationStateChanged(user => {
+        if(user) {
+          database.getPlayer(user.uid).then(snapshot => {
+            var socket = socketIOClient('http://localhost:5000');
+            socket.emit('set player socket', user.uid.toString());
             this.setState(() => ({
-              authUser: authUser,
-              currentPlayer: snapshot.val()
+              signedInUser: user,
+              signedInPlayer: snapshot.val(),
+              socket: socket
             }));
           });
+          
         }
         else {
-          this.setState(() => ({ authUser: null, currentPlayer: null }));
+          this.setState(() => ({ 
+            signedInUser: null, 
+            signedInPlayer: null,
+            sockt: null
+          }));
         }
       });
     }
 
     render() {
-      const { authUser, currentPlayer } = this.state;
+      const { 
+        signedInUser, 
+        signedInPlayer 
+      } = this.state;
 
       return (
-        <AuthUserContext.Provider value={{ authUser, currentPlayer }}>
+        <AuthenticatedUserContext.Provider value={{ signedInUser, signedInPlayer }}>
           <Component />
-        </AuthUserContext.Provider>
+        </AuthenticatedUserContext.Provider>
       );
     }
   }

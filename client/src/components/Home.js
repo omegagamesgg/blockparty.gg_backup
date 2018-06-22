@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import withAuthorization from './withAuthorization';
-import { db } from '../firebase';
-import AuthUserContext from './AuthUserContext';
+import { database } from '../firebase';
+import AuthenticatedUserContext from './AuthenticatedUserContext';
 import SignOutButton from './SignOut';
 import './Home.css';
 
@@ -13,12 +13,10 @@ class HomePage extends Component {
       nextGameTime: null,
       countdown: '',
     };
-    this.handleHomePageMouseDown = this.handleHomePageMouseDown.bind(this);
-    this.handleHomeMenuButtonMouseDown = this.handleHomeMenuButtonMouseDown.bind(this);
   }
 
   componentDidMount() {
-    const nextGameTimeRef = db.getNextGameTime();
+    const nextGameTimeRef = database.getNextGameTime();
     nextGameTimeRef.on('value', snapshot => {
       this.setState({ nextGameTime: snapshot.val() });
     });
@@ -46,13 +44,13 @@ class HomePage extends Component {
 
   render() {
     return (
-      <AuthUserContext.Consumer>
+      <AuthenticatedUserContext.Consumer>
         { context =>
-          <main className="HomePage" onMouseDown={this.handleHomePageMouseDown}>
+          <main className="HomePage" onMouseDown={() => { this.handleHomePageMouseDown(); } }>
             <header className="HomeHeader">
-              <button className="HomeMenuButton" onMouseDown={this.handleHomeMenuButtonMouseDown}><i className="fas fa-bars"></i></button>
+              <button className="HomeMenuButton" onMouseDown={() => { this.handleHomeMenuButtonMouseDown(); } }><i className="fas fa-bars"></i></button>
               <HomeMenu visibility={this.state.menuVisible} />
-              <p className="HomeTitle">Lobby</p>
+              <p className="HomeTitle">Home</p>
               <p className="HomeNextGameTime">{this.state.countdown}</p>
             </header>
             <section className="HomeBody" id="HomeBody">
@@ -63,7 +61,7 @@ class HomePage extends Component {
             </footer>
           </main>
         }
-      </AuthUserContext.Consumer>
+      </AuthenticatedUserContext.Consumer>
     ); 
   }
 }
@@ -98,7 +96,7 @@ class ChatMessageList extends Component {
   }
   
   componentDidMount() {
-    const messagesRef = db.getRecentMessages();
+    const messagesRef = database.getRecentChatMessages();
     messagesRef.on('child_added', snapshot => {
       const message = { id: snapshot.key, sender: snapshot.val().sender, text: snapshot.val().message };
       this.setState(prevState => ({
@@ -130,7 +128,7 @@ class ChatForm extends Component {
   }
   
   onSubmit(event) {
-    db.doCreateMessage(this.props.currentPlayer.playername, this.state.message);
+    database.createChatMessage(this.props.currentPlayer.playername, this.state.message);
     this.setState(() => ({...INITIAL_CHAT_FORM_STATE}));
     event.preventDefault();
   }
@@ -148,6 +146,6 @@ class ChatForm extends Component {
   }
 }
 
-const authCondition = (authUser) => !!authUser;
+const authorizationCondition = (signedInUser) => !!signedInUser;
 
-export default withAuthorization(authCondition)(HomePage);
+export default withAuthorization(authorizationCondition)(HomePage);

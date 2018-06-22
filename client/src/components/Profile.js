@@ -1,11 +1,11 @@
 import React from 'react';
-import AuthUserContext from './AuthUserContext';
+import AuthenticatedUserContext from './AuthenticatedUserContext';
 import { PasswordForgetForm } from './PasswordForget';
 import PasswordChangeForm from './PasswordChange';
 import withAuthorization from './withAuthorization';
 
 const ProfilePage = () =>
-  <AuthUserContext.Consumer>
+  <AuthenticatedUserContext.Consumer>
     { context => 
       <div>
         <p>{context.currentPlayer.playername}</p>
@@ -13,7 +13,7 @@ const ProfilePage = () =>
         <PasswordChangeForm />
       </div>
     }
-  </AuthUserContext.Consumer>
+  </AuthenticatedUserContext.Consumer>
 
 const authCondition = (authUser) => !!authUser;
 

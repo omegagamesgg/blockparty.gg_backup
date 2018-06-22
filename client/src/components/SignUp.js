@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { auth, db } from '../firebase';
+import { authentication, database } from '../firebase';
 import * as routes from '../constants/routes';
 import './SignUp.css';
 
@@ -11,7 +11,7 @@ const SignUpPage = ({history}) =>
   </div>
 
 const INITIAL_STATE = {
-  playername: '',
+  playerName: '',
   email: '',
   passwordOne: '',
   passwordTwo: '',
@@ -30,16 +30,16 @@ class SignUpForm extends Component {
 
   onSubmit = (event) => {
     const { 
-      playername,
+      playerName,
       email,
       passwordOne,
     } = this.state;
 
     const { history } = this.props;
 
-    auth.doCreateUserWithEmailAndPassword(email, passwordOne).then(authUser => {
-      // Create a player in the Firebase database
-      db.doCreatePlayer(authUser.user.uid, playername, email).then(() => {
+    authentication.createUser(email, passwordOne).then(user => {
+      // Create a player in the database
+      database.createPlayer(user.user.uid, playerName).then(() => {
         this.setState(() => ({...INITIAL_STATE}));
         history.push(routes.HOME);
       }).catch(error => {
@@ -53,7 +53,7 @@ class SignUpForm extends Component {
 
   render() {
     const {
-      playername,
+      playerName,
       email,
       passwordOne,
       passwordTwo,
@@ -63,11 +63,11 @@ class SignUpForm extends Component {
     const isInvalid = passwordOne !== passwordTwo ||
       passwordOne === '' ||
       email === '' ||
-      playername === '';
+      playerName === '';
 
     return (
       <form className="SignUpInputForm" onSubmit={this.onSubmit}>
-        <input className="InputField" value={playername} onChange={event => this.setState(byPropKey('playername', event.target.value))} type="text" placeholder="Player name" />
+        <input className="InputField" value={playerName} onChange={event => this.setState(byPropKey('playerName', event.target.value))} type="text" placeholder="Player name" />
         <input className="InputField" value={email} onChange={event => this.setState(byPropKey('email', event.target.value))} type="text" placeholder="Email address" />
         <input className="InputField" value={passwordOne} onChange={event => this.setState(byPropKey('passwordOne', event.target.value))} type="password" placeholder="Password" />
         <input className="InputField" value={passwordTwo} onChange={event => this.setState(byPropKey('passwordTwo', event.target.value))} type="password" placeholder="Confirm password" />

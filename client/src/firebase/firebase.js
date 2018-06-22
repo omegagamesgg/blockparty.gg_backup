@@ -2,15 +2,7 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/database';
 
-const prodConfig = {
-  apiKey: "AIzaSyD5fiqWtwdnuqGeGM5RFodALEP-PFyCI9o",
-  authDomain: "block-party-31d52.firebaseapp.com",
-  databaseURL: "https://block-party-31d52.firebaseio.com",
-  projectId: "block-party-31d52",
-  storageBucket: "block-party-31d52.appspot.com",
-  messagingSenderId: "235246870848"
-};
-
+// Setup development and production environment configurations
 const devConfig = {
   apiKey: "AIzaSyBFfRnRAGhc5d7Ul4WoDoXXSGKoc2d7Bx0",
   authDomain: "block-party-development.firebaseapp.com",
@@ -20,16 +12,25 @@ const devConfig = {
   messagingSenderId: "742635923334"
 };
 
+const prodConfig = {
+  apiKey: "AIzaSyD5fiqWtwdnuqGeGM5RFodALEP-PFyCI9o",
+  authDomain: "block-party-31d52.firebaseapp.com",
+  databaseURL: "https://block-party-31d52.firebaseio.com",
+  projectId: "block-party-31d52",
+  storageBucket: "block-party-31d52.appspot.com",
+  messagingSenderId: "235246870848"
+};
+
 const config = process.env.NODE_ENV === 'production' ? prodConfig : devConfig;
 
-if(!firebase.apps.lenght) {
+if(!firebase.apps.length) {
   firebase.initializeApp(config);
 }
 
-const db = firebase.database();
-const auth = firebase.auth();
+const database = firebase.database();
+const authentication = firebase.auth();
 
 export {
-  db,
-  auth,
+  database,
+  authentication,
 };

@@ -1,8 +1,12 @@
 const express = require('express');
 const path = require('path');
-const admin = require('firebase-admin');
-const serviceAccountDev = require('./serviceAccountDev.json');
-const serviceAccountProd = require('./serviceAccountProd.json');
+const http = require('http');
+const firebaseManager = require('./firebaseManager');
+const gameManager = require('./gameManager');
+const playerManager = require('./playerManager');
+const socketManager = require('./socketManager');
+
+var gamePlayers = [];
 
 // Setup Express web app
 const app = express();
@@ -10,90 +14,29 @@ const app = express();
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'client/build')));
 
+app.get('/games/now', (request, response) => {
+  response.send(gameManager.gameState);
+});
+
 // Send back React's index.html by default
 app.get('*', (request, response) => {
   response.sendFile(path.join(__dirname + '/client/build/index.html'));
 });
 
-// Start listening for connections on server
+// Setup HTTP server
 const port = process.env.PORT || 5000;
-app.listen(port);
-console.log(`Server listening on ${port}`);
+const httpServer = http.Server(app);
+httpServer.listen(port);
+console.log(`HTTP server listening on ${port}`);
 
-// Initialize firebase admin
-var serviceAccount;
-var databaseURL;
-if(process.env.NODE_ENV === 'production') {
-  serviceAccount = serviceAccountProd;
-  databaseURL = "https://block-party-31d52.firebaseio.com";
-}
-else {
-  serviceAccount = serviceAccountDev;
-  databaseURL = "https://block-party-development.firebaseio.com";
-}
+// Initialize Firebase administration
+firebaseManager.initialize();
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: databaseURL
-});
+// Initialize game state
+gameManager.initialize();
 
-// Initialize game duration
-var gameDuration;
-var gameDurationRef = admin.database().ref('gameDuration');
-gameDurationRef.once('value').then((snapshot) => {
-  if(!snapshot.val()) {
-    gameDuration = 120000;
-    gameDurationRef.set(gameDuration);
-    console.log(`Set database state: gameDuration: ${gameDuration}`);
-  }
-  else {
-    gameDuration = snapshot.val();
-    console.log(`Read database state: gameDuration: ${gameDuration}`);
-  }
-  return snapshot;
-}).catch(error => {
-  console.log(error);
-});
+// Initialize player state
+playerManager.initialize();
 
-// Initialize next game time
-var nextGameTime;
-var nextGameTimeRef = admin.database().ref('nextGameTime');
-nextGameTimeRef.once('value').then((snapshot) => {
-  if(!snapshot.val()) {
-    nextGameTime = new Date(Date.now() + gameDuration);
-    nextGameTimeRef.set(nextGameTime.toJSON());
-    console.log(`Set database state: nextGameTime: ${nextGameTime}`);
-  }
-  else {
-    nextGameTime = new Date(snapshot.val());
-    console.log(`Read database state: nextGameTime: ${nextGameTime}`);
-  }
-  return snapshot;
-}).catch(error => {
-  console.log(error);
-});
-
-// Start game timer update loop
-setInterval(() => {
-  if(Date.now() >= nextGameTime) {
-    nextGameTime = new Date(Date.now() + gameDuration);
-    admin.database().ref('nextGameTime').set(nextGameTime.toJSON());
-    console.log(`Set database state: nextGameTime: ${nextGameTime}`);
-  }
-}, 1000);
-
-var players = {};
-// Initialize game players
-var playersRef = admin.database().ref('players');
-var gameStateRef = admin.database().ref('gameState');
-gameStateRef.remove();
-playersRef.once('value', snapshot => {
-  snapshot.forEach(player => {
-    players[player.key] = {
-      x: 50,
-      y: 50,
-    };
-    var gamePlayerStateRef = admin.database().ref(`gameState/${player.key}`);
-    gamePlayerStateRef.set(players[player.key]);
-  });
-});
+// Initialize game socket server
+socketManager.initialize(httpServer);

@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { auth, db } from '../firebase';
+import { authentication, database } from '../firebase';
 
 class PlayScene extends Phaser.Scene {
   constructor() {
@@ -58,7 +58,7 @@ class PlayScene extends Phaser.Scene {
     otherBird.id = playerStateSnapshot.key;
     this.otherBirds.push(otherBird);
 
-    db.getGamePlayerState(otherBird.id).on('value', snapshot => {
+    database.getGamePlayerState(otherBird.id).on('value', snapshot => {
       otherBird.x = snapshot.val().x;
       otherBird.y = snapshot.val().y;
     });
@@ -125,7 +125,7 @@ class PlayScene extends Phaser.Scene {
       if(this.currentBird.oldPosition && 
         (this.currentBird.x !== this.currentBird.oldPosition.x ||
         this.currentBird.y !== this.currentBird.oldPosition.y)) {
-          db.setGamePlayerState(auth.getCurrentUser().uid, this.currentBird.x, this.currentBird.y);
+          database.setGamePlayerState(authentication.getSignedInUser().uid, this.currentBird.x, this.currentBird.y);
         }
 
     this.currentBird.oldPosition = {

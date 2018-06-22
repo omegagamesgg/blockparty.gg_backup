@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { auth } from '../firebase';
+import { authentication } from '../firebase';
 import * as routes from '../constants/routes';
 import './PasswordForget.css';
 
@@ -25,7 +25,7 @@ class PasswordForgetForm extends Component {
   onSubmit = (event) => {
     const { email } = this.state;
     const { history } = this.props;
-    auth.doPasswordRest(email).then(() => {
+    authentication.resetUserPassword(email).then(() => {
       this.setState(() => ({ ...INITIAL_STATE }));
       history.push(routes.SIGN_IN);
     }).catch(error => {

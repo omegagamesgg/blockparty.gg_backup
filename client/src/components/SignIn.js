@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { SignUpLink } from './SignUp';
 import { PasswordForgetLink } from './PasswordForget';
-import { auth } from '../firebase';
+import { authentication } from '../firebase';
 import * as routes from '../constants/routes';
 import './SignIn.css';
 
@@ -36,7 +36,7 @@ class SignInForm extends Component {
     const { email, password } = this.state;
     const { history } = this.props;
 
-    auth.doSignInWithEmailAndPassword(email, password).then(() => {
+    authentication.signInUser(email, password).then(() => {
       this.setState(() => ({ ...INITIAL_STATE }));
       history.push(routes.HOME);
     }).catch(error => {

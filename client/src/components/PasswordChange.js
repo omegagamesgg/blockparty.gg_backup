@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { auth } from '../firebase';
+import { authentication } from '../firebase';
 
 const byPropKey = (propertyName, value) => () => ({ [propertyName]: value });
 const INITIAL_STATE = { passwordOne: '', passwordTwo: '', error: null };
@@ -12,7 +12,7 @@ class PasswordChangeForm extends Component {
 
   onSubmit = (event) => {
     const { passwordOne } = this.state;
-    auth.doPasswordUpdate(passwordOne).then(() => {
+    authentication.updateUserPassword(passwordOne).then(() => {
       this.setState(() => ({ ...INITIAL_STATE }));
     }).catch(error => {
       this.setState(byPropKey('error', error));
