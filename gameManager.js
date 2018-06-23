@@ -1,45 +1,38 @@
+var pregameDuration = 5000;
+var gameDuration = 120000;
+var postgameDuration = 30000;
 var gameState = {
   active: false,
-  gameId: null,
-  gameType: null,
-  startTime: null,
-  nextGameTime: new Date(Date.now() + timeToFirstGame)
+  gameEndTime: null,
+  nextGameTime: new Date(Date.now() + pregameDuration)
 };
 
-var timeToFirstGame = 5000;
-var nextGameId = 0;
-var nextGameDelay = 5000;
-
 var logGameState = () => {
-  console.log(`gameState = { active: ${gameState.active}, gameId: ${gameState.gameId}, gameType: ${gameState.gameType}, startTime: ${gameState.startTime}, nextGameTime: ${gameState.nextGameTime} }`);
+  console.log(`gameState = { active: ${gameState.active}, gameEndTime: ${gameState.gameEndTime}, nextGameTime: ${gameState.nextGameTime} }`);
 };
 
 // Initialize the game state
 var initialize = () => {
   console.log('initializing game state');
-  setTimeout(() => { startNextGame() }, timeToFirstGame);
+  setTimeout(() => { startNextGame() }, pregameDuration);
 
   logGameState();
 };
 
 var startNextGame = () => {
   gameState.active = true;
-  gameState.gameId = nextGameId++;
-  gameState.gameType = "clickyRace";
-  gameState.startTime = gameState.nextGameTime;
+  gameState.gameEndTime = new Date(Date.now() + gameDuration);
   gameState.nextGameTime = null;
   logGameState();
-  setTimeout(() => { endGame(); }, 5000);
+  setTimeout(() => { endGame(); }, gameDuration);
 };
 
 var endGame = () => {
   gameState.active = false;
-  gameState.gameId = null;
-  gameState.gameType = null;
-  gameState.startTime = null;
-  gameState.nextGameTime = new Date(Date.now() + nextGameDelay);
+  gameState.gameEndTime = null;
+  gameState.nextGameTime = new Date(Date.now() + postgameDuration);
   logGameState();
-  setTimeout(() => { startNextGame(); }, nextGameDelay);
+  setTimeout(() => { startNextGame(); }, postgameDuration);
 }
 
 exports.gameState = gameState;

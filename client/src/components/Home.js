@@ -3,6 +3,7 @@ import withAuthorization from './withAuthorization';
 import { database } from '../firebase';
 import AuthenticatedUserContext from './AuthenticatedUserContext';
 import SignOutButton from './SignOut';
+import { gameState, getGameState } from '../gameManager';
 import './Home.css';
 
 class HomePage extends Component {
@@ -10,26 +11,7 @@ class HomePage extends Component {
     super(props);
     this.state = {
       menuVisible: false,
-      nextGameTime: null,
-      countdown: '',
     };
-  }
-
-  componentDidMount() {
-    const nextGameTimeRef = database.getNextGameTime();
-    nextGameTimeRef.on('value', snapshot => {
-      this.setState({ nextGameTime: snapshot.val() });
-    });
-
-    setInterval(() => {
-      var nextGameTimeDate = new Date(this.state.nextGameTime);
-      var currentTimeDate = new Date();
-      var remainingTimeDate = new Date(nextGameTimeDate - currentTimeDate);
-      var formattedMinutes = remainingTimeDate.getMinutes();
-      var formattedSeconds = remainingTimeDate.getSeconds() >= 10 ? remainingTimeDate.getSeconds() : '0' + remainingTimeDate.getSeconds();
-      var countdown = `Next game starts in ${formattedMinutes}:${formattedSeconds}`;
-      this.setState({ countdown: countdown });
-    }, 1000);
   }
 
   handleHomePageMouseDown(event) {
@@ -51,7 +33,7 @@ class HomePage extends Component {
               <button className="HomeMenuButton" onMouseDown={() => { this.handleHomeMenuButtonMouseDown(); } }><i className="fas fa-bars"></i></button>
               <HomeMenu visibility={this.state.menuVisible} />
               <p className="HomeTitle">Home</p>
-              <p className="HomeNextGameTime">{this.state.countdown}</p>
+              <GameStateView />
             </header>
             <section className="HomeBody" id="HomeBody">
               <ChatMessageList />
@@ -80,6 +62,59 @@ class HomeMenu extends Component {
         </ul>
       </nav>
     )
+  }
+}
+
+class GameStateView extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      gameState: null,
+      gameStateActive: '',
+      gameStateTime: '',
+    };
+  }
+
+  componentDidMount() {
+    getGameState();
+    this.updateTime();
+  }
+
+  updateTime() {
+    var remainingTime;
+    var formattedRemainingMinutes;
+    var formattedRemainingSeconds;
+    var active = gameState.active === true ? "Game in progress" : "Next game starts in...";
+    this.setState({ gameState: gameState });
+    this.setState({ gameStateActive: active });
+    if(gameState.active && gameState.gameEndTime) {
+      remainingTime = new Date(gameState.gameEndTime.getTime() - Date.now());
+      formattedRemainingMinutes = remainingTime.getMinutes();
+      formattedRemainingSeconds = remainingTime.getSeconds() < 10 ? '0' + remainingTime.getSeconds() : remainingTime.getSeconds();
+    }
+    else if(!gameState.active && gameState.nextGameTime) {
+      remainingTime = new Date(gameState.nextGameTime.getTime() - Date.now());
+      formattedRemainingMinutes = remainingTime.getMinutes();
+      formattedRemainingSeconds = remainingTime.getSeconds() < 10 ? '0' + remainingTime.getSeconds() : remainingTime.getSeconds();
+    }
+    this.setState({ gameStateTime: `${formattedRemainingMinutes}:${formattedRemainingSeconds}` });
+    setTimeout(() => { this.updateTime(); }, 1000);
+  }
+
+  render() {
+    if(this.state.gameState) {
+      return(
+        <div className="GameStateView">
+          <p className="GameStateActive">{this.state.gameStateActive}</p>
+          <p className="GameStateTime">{this.state.gameStateTime}</p>
+        </div>
+      );
+    }
+    else {
+      return(
+        <p>Fail</p>
+      )
+    }
   }
 }
 

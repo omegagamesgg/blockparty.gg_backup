@@ -6,8 +6,6 @@ const gameManager = require('./gameManager');
 const playerManager = require('./playerManager');
 const socketManager = require('./socketManager');
 
-var gamePlayers = [];
-
 // Setup Express web app
 const app = express();
 
@@ -15,6 +13,7 @@ const app = express();
 app.use(express.static(path.join(__dirname, 'client/build')));
 
 app.get('/games/now', (request, response) => {
+  response.setHeader('Access-Control-Allow-Origin', '*');
   response.send(gameManager.gameState);
 });
 
