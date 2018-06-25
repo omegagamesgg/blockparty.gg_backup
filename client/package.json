@@ -1,21 +1,17 @@
 {
-  "name": "blockparty.gg",
+  "name": "client",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "firebase": "^5.0.4",
-    "phaser": "^3.10.1",
-    "react": "^16.4.0",
-    "react-dom": "^16.4.0",
-    "react-router-dom": "^4.3.0",
-    "react-scripts": "1.1.4",
-    "socket.io-client": "^2.1.1"
+    "firebase": "^5.1.0",
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1",
+    "react-scripts": "1.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
-  },
-  "proxy": "http://localhost:5000"
+  }
 }
