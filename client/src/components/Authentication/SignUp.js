@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { authentication, database } from '../firebase';
-import * as routes from '../constants/routes';
+import { authentication, database } from '../../firebase';
+import * as routes from '../../constants/routes';
 import './SignUp.css';
 
 const SignUpPage = ({history}) =>
@@ -72,7 +72,7 @@ class SignUpForm extends Component {
         <input className="InputField" value={passwordOne} onChange={event => this.setState(byPropKey('passwordOne', event.target.value))} type="password" placeholder="Password" />
         <input className="InputField" value={passwordTwo} onChange={event => this.setState(byPropKey('passwordTwo', event.target.value))} type="password" placeholder="Confirm password" />
         <button className="SubmitButton" type="submit" disabled={isInvalid}>Sign up</button>
-        { error && <p className="ErrorMessage">{error.message}</p> }
+        <p className="ErrorMessage">&nbsp;{error && error.message}</p>
       </form>
     );
   }

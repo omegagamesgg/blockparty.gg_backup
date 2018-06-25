@@ -7,7 +7,7 @@ const LandingPage = ({ history }) =>
   <div className="LandingPage">
     <div className="Title">
       <img className="Logo" src="images/BlockPartyLogo.png" alt="Block Party Logo"></img>
-      <p className="Tagline">Bringing the world together through connected play</p>
+      <p className="Tagline">Coming soon</p>
     </div>
     <button className="SignInButton" type="button" onClick={() => {history.push(routes.SIGN_IN)}}>Enter the party</button>
     <p className="Legalese">By playing you agree to the<br/><a href="/">Terms of Use</a> and <a href="/">Privacy Policy</a></p>

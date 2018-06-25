@@ -1,15 +1,15 @@
 import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import LandingPage from './Landing';
-import SignUpPage from './SignUp';
-import SignInPage from './SignIn';
-import PasswordForgetPage from './PasswordForget';
-import HomePage from './Home';
+import SignUpPage from './Authentication/SignUp';
+import SignInPage from './Authentication/SignIn';
+import PasswordForgetPage from './Authentication/PasswordForget';
+import HomePage from './Home/Home';
 import ProfilePage from './Profile';
 import PlayPage from './Play';
 import ClickyRacePage from './Games/ClickyRace';
 import * as routes from '../constants/routes';
-import withAuthentication from './withAuthentication';
+import withAuthentication from './Authentication/withAuthentication';
 import './App.css';
 
 const App = () =>

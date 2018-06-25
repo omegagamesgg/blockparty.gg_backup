@@ -17,6 +17,13 @@ app.get('/games/now', (request, response) => {
   response.send(gameManager.gameState);
 });
 
+app.get('/players/me', (request, response) => {
+  response.setHeader('Access-Control-Allow-Origin', '*');
+  firebaseManager.firebaseAdmin.auth().verifyIdToken(request.query.auth).then(decodedToken => {
+    response.send(playerManager.players[decodedToken.uid]);
+  });
+});
+
 // Send back React's index.html by default
 app.get('*', (request, response) => {
   response.sendFile(path.join(__dirname + '/client/build/index.html'));

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import withAuthorization from './withAuthorization';
+import withAuthorization from './Authentication/withAuthorization';
 import Phaser from 'phaser';
 import PlayScene from './PlayScene';
 import { authentication, database } from '../firebase';

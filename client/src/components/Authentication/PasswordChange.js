@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { authentication } from '../firebase';
+import { authentication } from '../../firebase';
 
 const byPropKey = (propertyName, value) => () => ({ [propertyName]: value });
 const INITIAL_STATE = { passwordOne: '', passwordTwo: '', error: null };

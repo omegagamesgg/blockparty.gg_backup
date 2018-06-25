@@ -27,5 +27,6 @@ var setPlayerSocket = (playerId, socketId) => {
   }
 };
 
+exports.players = players;
 exports.initialize = initialize;
 exports.setPlayerSocket = setPlayerSocket;

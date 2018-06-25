@@ -1,14 +1,14 @@
 import React from 'react';
-import AuthenticatedUserContext from './AuthenticatedUserContext';
-import { PasswordForgetForm } from './PasswordForget';
-import PasswordChangeForm from './PasswordChange';
-import withAuthorization from './withAuthorization';
+import AuthenticatedUserContext from './Authentication/AuthenticatedUserContext';
+import { PasswordForgetForm } from './Authentication/PasswordForget';
+import PasswordChangeForm from './Authentication/PasswordChange';
+import withAuthorization from './Authentication/withAuthorization';
 
 const ProfilePage = () =>
   <AuthenticatedUserContext.Consumer>
     { context => 
       <div>
-        <p>{context.currentPlayer.playername}</p>
+        <p>{context.currentPlayer.name}</p>
         <PasswordForgetForm />
         <PasswordChangeForm />
       </div>

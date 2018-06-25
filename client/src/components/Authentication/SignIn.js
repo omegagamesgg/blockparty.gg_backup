@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { SignUpLink } from './SignUp';
 import { PasswordForgetLink } from './PasswordForget';
-import { authentication } from '../firebase';
-import * as routes from '../constants/routes';
+import { authentication } from '../../firebase';
+import * as routes from '../../constants/routes';
 import './SignIn.css';
 
 const SignInPage = ({ history }) =>
@@ -15,9 +15,7 @@ const SignInPage = ({ history }) =>
     <PasswordForgetLink />
   </div>
 
-const byPropKey = (propertyName, value) => () => ({
-  [propertyName]: value,
-});
+const byPropKey = (propertyName, value) => () => ({ [propertyName]: value });
 
 const INITIAL_STATE = {
   email: '',
@@ -55,7 +53,7 @@ class SignInForm extends Component {
         <input className="InputField" value={email} onChange={event => this.setState(byPropKey('email', event.target.value))} type="text" placeholder="Email address" />
         <input className="InputField" value={password} onChange={event => this.setState(byPropKey('password', event.target.value))} type="password" placeholder="Password" />
         <button className="SubmitButton" disabled={isInvalid} type="submit">Sign in</button>
-        { error && <p className="ErrorMessage">{error.message}</p> }
+        <p className="ErrorMessage">&nbsp;{error && error.message}</p>
       </form>
     );
   }

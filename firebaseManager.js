@@ -1,4 +1,4 @@
-const admin = require('firebase-admin');
+const firebaseAdmin = require('firebase-admin');
 const serviceAccountDev = require('./serviceAccountDev.json');
 const serviceAccountProd = require('./serviceAccountProd.json');
 
@@ -15,10 +15,11 @@ var initialize = () => {
     databaseURL = "https://block-party-development.firebaseio.com";
   }
     
-  admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
+  firebaseAdmin.initializeApp({
+    credential: firebaseAdmin.credential.cert(serviceAccount),
     databaseURL: databaseURL
   });
 }
 
 exports.initialize = initialize;
+exports.firebaseAdmin = firebaseAdmin;

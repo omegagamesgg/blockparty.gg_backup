@@ -13,8 +13,8 @@ export const updatePlayer = (id, name) =>
 
 // Chat Messages API
 
-export const createChatMessage = (senderId, message) =>
-  database.ref('chatMessages').push({ senderId, message });
+export const createChatMessage = (playerId, playerName, message) =>
+  database.ref('chatMessages').push({ playerId, playerName, message });
 
 export const getRecentChatMessages = () =>
   database.ref('chatMessages').orderByKey().limitToLast(100);

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import withAuthorization from '../withAuthorization';
+import withAuthorization from '../Authentication/withAuthorization';
 import socketIOClient from 'socket.io-client';
 import { authentication } from '../../firebase';
 
