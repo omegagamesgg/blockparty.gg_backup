@@ -1,18 +1,16 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { BrowserRouter, Route } from 'react-router-dom';
+import * as routes from './routes';
+import LandingPage from './LandingPage';
+import PlayPage from './PlayPage';
 import './App.css';
 
-class App extends Component {
-  render() {
-    return (
-      <main className="App">
-        <h1 className="App-instructions">Click as many times as possible in 2 minutes!</h1>
-        <div className="App-score-group">
-          <p className="App-score-label">Score</p>
-          <h2 className="App-score-text">0</h2>
-        </div>
-      </main>
-    );
-  }
-}
+const App = () =>
+  <BrowserRouter>
+    <main className="App">
+      <Route exact path={ routes.LANDING } component={ () => <LandingPage /> } />
+      <Route exact path={ routes.PLAY } component={ () => <PlayPage /> } />
+    </main>
+  </BrowserRouter>  
 
 export default App;
