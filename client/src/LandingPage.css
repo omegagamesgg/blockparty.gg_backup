@@ -23,6 +23,7 @@
 }
 
 .LandingPage-callToAction {
+  width: 100%;
   font-size: 32px;
   margin: 10px;
 }
