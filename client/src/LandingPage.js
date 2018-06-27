@@ -4,7 +4,7 @@ import './LandingPage.css';
 const LandingPage = () =>
   <div className="LandingPage">
     <img src="images/BlockPartyLogo.png" alt="Block Party"></img>
-    <p className="LandingPage-tagline">Live social minigame network<br /><br />Coming soon</p>
+    <p className="LandingPage-tagline">A live social minigame network<br /><br />Coming soon to the web, iOS and Android</p>
     <div className="LandingPage-signUpForm" id="mc_embed_signup">
       <form action="https://blockparty.us18.list-manage.com/subscribe/post?u=063934cb27760e2adccfeab1b&amp;id=96738a899b" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" className="validate" target="_blank" noValidate>
         <div id="mc_embed_signup_scroll">
