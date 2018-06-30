@@ -11,8 +11,8 @@ firebaseAdmin.initializeApp({
 });
 
 const pregameDuration = 3000;
-const gameDuration = 10000;
-const postgameDuration = 10000;
+const gameDuration = 30000;
+const postgameDuration = 15000;
 var clock = {
   active: false,
   startTime: null,

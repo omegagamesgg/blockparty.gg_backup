@@ -14,7 +14,9 @@ class PlayPage extends Component {
       endTime: null,
       remainingTime: '',
       scores: [],
-      players: []
+      players: [],
+      showingTimesUp: false,
+      showingResults: false,
     };
     this.handlePageClick = this.handlePageClick.bind(this);
     this.handleSignInSubmit = this.handleSignInSubmit.bind(this);
@@ -69,12 +71,12 @@ class PlayPage extends Component {
   startGame() {
     console.log('starting game');
     this.setState({ score: 0 });
-    setTimeout(() => { this.endGame(); }, this.state.endTime);
   }
 
   endGame() {
     console.log('ending game');
-    setTimeout(() => { this.startGame(); }, this.state.startTime);
+    this.setState({ showingTimesUp: true });
+    setTimeout(() => { this.setState({ showingTimesUp: false }); this.showResults(); }, 3000);
   }
 
   updateTime() {
@@ -90,6 +92,11 @@ class PlayPage extends Component {
       this.setState({ remainingTime: formattedTime });
     }
     setTimeout(() => { this.updateTime(); }, 1000);
+  }
+
+  showResults() {
+    this.setState({ showingResults: true });
+    setTimeout(() => { console.log('showResults=false'); this.setState({ showingResults: false }); }, this.state.startTime.getTime() - Date.now());
   }
 
   handlePageClick() {
@@ -166,10 +173,21 @@ class PlayPage extends Component {
           <h1 className="PlayPage-title">Click Party</h1>
           <div className="PlayPage-clock">{this.state.active ? "Remaining time" : "Next game starts in"}: {this.state.remainingTime}</div>
           {player}
-          <div className="PlayPage-score">
-            <p className="PlayPage-scoreLabel">Score</p>
-            <p className="PlayPage-scoreText">{this.state.score}</p>
-          </div>
+          { this.state.active &&
+            <div className="PlayPage-score">
+              <p className="PlayPage-scoreLabel">Score</p>
+              <p className="PlayPage-scoreText">{this.state.score}</p>
+            </div>
+          }
+          { this.state.showingTimesUp &&
+            <div className="PlayPage-timesUp">
+              <p className="PlayPage-timesUpLabel">Time's up!</p>
+            </div>  
+          }
+          { this.state.showingResults &&
+            <div className="PlayPage-results">
+            </div>
+          }
         </div>
       </div>
     )

@@ -114,3 +114,19 @@
   font-size: 96px;
   text-align: center;
 }
+
+.PlayPage-timesUp {
+  position: fixed;
+  left: 25%;
+  top: 25%;
+  width: 50%;
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.PlayPage-timesUpLabel {
+  font-size: 96px;
+  text-align: center;
+}
