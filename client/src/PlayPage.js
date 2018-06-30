@@ -13,11 +13,12 @@ class PlayPage extends Component {
       startTime: null,
       endTime: null,
       remainingTime: '',
-      leaderboard: [],
+      scores: [],
       players: []
     };
     this.handlePageClick = this.handlePageClick.bind(this);
-    this.handleNameSubmit = this.handleNameSubmit.bind(this);
+    this.handleSignInSubmit = this.handleSignInSubmit.bind(this);
+    this.handleSignOutClick = this.handleSignOutClick.bind(this);
     this.playerId = '';
     this.scoreId = '';
   }
@@ -49,7 +50,7 @@ class PlayPage extends Component {
     });
 
     firebase.database.ref(`games/clickparty/scores`).on('value', snapshot => {
-      var leaderboard = [];
+      var scores = [];
       snapshot.forEach(score => {
         var newScore = {};
         newScore.key = score.key;
@@ -58,15 +59,16 @@ class PlayPage extends Component {
           newScore.name = player.name;
         }
         newScore.score = score.val().score;
-        leaderboard.push(newScore);
+        scores.push(newScore);
       });
-      this.setState({ leaderboard: leaderboard });
+      this.setState({ scores: scores });
     });
     this.updateTime();
   }
 
   startGame() {
     console.log('starting game');
+    this.setState({ score: 0 });
     setTimeout(() => { this.endGame(); }, this.state.endTime);
   }
 
@@ -94,10 +96,10 @@ class PlayPage extends Component {
     if(!this.state.active || this.playerId === '' || this.scoreId === '')
       return;
     
-    firebase.database.ref(`games/clickparty/scores/${this.scoreId}`).update({ score: this.state.score + 1 });
+    firebase.database.ref(`games/clickparty/scores/${this.scoreId}`).set({ playerId: this.playerId, score: this.state.score + 1 });
   }
 
-  handleNameSubmit(event) {
+  handleSignInSubmit(event) {
     this.setState({ playerName: this.state.inputName });
     firebase.database.ref(`games/clickparty/players`).once('value', snapshot => {
       snapshot.forEach(player => {
@@ -132,20 +134,43 @@ class PlayPage extends Component {
     event.preventDefault();
   }
 
+  handleSignOutClick(event) {
+    this.setState({ playerName: '' });
+    firebase.database.ref(`games/clickparty/scores/${this.playerId}`).remove();
+    firebase.database.ref(`games/clickparty/scores/${this.scoreId}`).remove();
+    this.playerId = '';
+    this.scoreId = '';
+  }
+
   render() {
+    let player;
+    if(this.state.playerName) {
+      player = 
+        <div className="PlayPage-profile">
+          <div>&nbsp;{this.state.playerName}</div>
+          <button onClick={this.handleSignOutClick}>Sign out</button>
+        </div>
+    }
+    else {
+      player = 
+          <form className="PlayPage-signInForm" onSubmit={this.handleSignInSubmit}>
+            <p className="PlayPage-instructions">Enter your name to play</p>
+            <input className="PlayPage-inputField" value={this.state.inputName} onChange={event => this.setState({ inputName: event.target.value })} type="text" placeholder="Player name" />
+            <button className="PlayPage-submitButton" disabled={this.state.inputName === ''} type="submit">Play</button>
+          </form>
+        
+    }
     return(
       <div className="PlayPage" onClick={this.handlePageClick}>
-        <h1>Play!</h1>
-        <form onSubmit={this.handleNameSubmit}>
-          <input value={this.state.inputName} onChange={event => this.setState({ inputName: event.target.value })} type="text" placeholder="Player name" />
-          <button disabled={this.state.name === ''} type="submit">Sign in</button>
-        </form>
-        <div>&nbsp;{this.state.playerName}</div>
-        <div>Score: {this.state.score}</div>
-        <div>Time: {this.state.remainingTime}</div>
-        <div>Active: {this.state.active.toString()}</div>
-        <div>Leaderboard: {this.state.leaderboard.map(score => <p key={score.key}>{score.name}: {score.score}</p>)}</div>
-
+        <div className="PlayPage-signInBackdrop">
+          <h1 className="PlayPage-title">Click Party</h1>
+          <div className="PlayPage-clock">{this.state.active ? "Remaining time" : "Next game starts in"}: {this.state.remainingTime}</div>
+          {player}
+          <div className="PlayPage-score">
+            <p className="PlayPage-scoreLabel">Score</p>
+            <p className="PlayPage-scoreText">{this.state.score}</p>
+          </div>
+        </div>
       </div>
     )
   }

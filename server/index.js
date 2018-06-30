@@ -11,9 +11,9 @@ firebaseAdmin.initializeApp({
 });
 
 const pregameDuration = 3000;
-const gameDuration = 60000;
-const postgameDuration = 15000;
-var gameState = {
+const gameDuration = 10000;
+const postgameDuration = 10000;
+var clock = {
   active: false,
   startTime: null,
   endTime: null,
@@ -24,21 +24,30 @@ setTimeout(() => { startGame(); }, pregameDuration);
 
 var startGame = () => {
   console.log('starting game');
-  gameState.active = true;
-  gameState.startTime = new Date(Date.now());
-  gameState.endTime = new Date(Date.now() + gameDuration);
-  firebaseAdmin.database().ref(`games/clickparty/clock`).update({ active: gameState.active, startTime: gameState.startTime, endTime: gameState.endTime });
-  firebaseAdmin.database().ref(`games/clickparty/scores`).once('value', snapshot => {
-    snapshot.forEach(score => firebaseAdmin.database().ref(`games/clickparty/scores/${score.key}`).update({ score: 0 }));
-  });
+  clock.active = true;
+  clock.startTime = new Date(Date.now());
+  clock.endTime = new Date(Date.now() + gameDuration);
+  firebaseAdmin.database().ref(`games/clickparty/clock`).update({ active: clock.active, startTime: clock.startTime, endTime: clock.endTime });
+  firebaseAdmin.database().ref(`games/clickparty/scores`).set(null);
+  firebaseAdmin.database().ref(`games/clickparty/results`).set(null);
   setTimeout(() => { endGame(); }, gameDuration);
 }
 
 var endGame = () => {
   console.log('ending game');
-  gameState.active = false;
-  gameState.startTime = new Date(Date.now() + postgameDuration);
-  gameState.endTime = new Date(Date.now());
-  firebaseAdmin.database().ref(`games/clickparty/clock`).update({ active: gameState.active, startTime: gameState.startTime, endTime: gameState.endTime });
+  clock.active = false;
+  clock.startTime = new Date(Date.now() + postgameDuration);
+  clock.endTime = new Date(Date.now());
+  firebaseAdmin.database().ref(`games/clickparty/clock`).update({ active: clock.active, startTime: clock.startTime, endTime: clock.endTime });
+
+  // Create game results
+  firebaseAdmin.database().ref(`games/clickparty/scores`).orderByChild('score').once('value', snapshot => {
+    let result = [];
+    snapshot.forEach(score => {
+      result.splice(0, 0, { playerId: score.val().playerId, score: score.val().score });
+    });
+    firebaseAdmin.database().ref(`games/clickparty/results`).set(result);
+  });
+
   setTimeout(() => { startGame(); }, postgameDuration);
 }

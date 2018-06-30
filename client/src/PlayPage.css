@@ -7,4 +7,110 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color: #006FFF;
+  color: white;
+  user-select: none;
+}
+
+.PlayPage-title {
+  position: absolute;
+  width: 100%;
+  top: 10px;
+  font-size: 32px;
+  margin: 10px;
+  text-align: center;
+  color: white;
+}
+
+.PlayPage-clock {
+  position: absolute;
+  top: 50px;
+  width: 100%;
+  font-size: 16px;
+  margin: 10px;
+  text-align: center;
+  color: white;
+}
+
+.PlayPage-profile {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 16px;
+  color: white;
+}
+
+.PlayPage-signInBackdrop {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 50;
+}
+
+.PlayPage-signInForm {
+  position: absolute;
+  left: 12.5%;
+  top: 25%;
+  width: 75%;
+  height: 50%;
+  z-index: 200;
+  background-color: white;
+  border-radius: 5px;
+  margin: 0 auto;
+  padding: 30;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.PlayPage-instructions {
+  width: 100%;
+  font-size: 32px;
+  text-align: center;
+  color: #006FFF;
+}
+
+.PlayPage-inputField {
+  width: 100%;
+  height: 50px;
+  font-size: 16px;
+  border: none;
+  border-radius: 3px;
+  text-align: center;
+  background-color: lightgray;
+}
+
+.PlayPage-submitButton {
+  width: 100%;
+  height: 50px;
+  font-size: 16px;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  background-color: #00387F;
+}
+
+.PlayPage-score {
+  position: absolute;
+  left: 25%;
+  top: 25%;
+  width: 50%;
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.PlayPage-scoreLabel {
+  font-size: 16px;
+  text-align: center;
+}
+
+.PlayPage-scoreText {
+  font-size: 96px;
+  text-align: center;
 }
